@@ -1,0 +1,19 @@
+1. fqy
+1. fqykcbcpkg_2
+1. fqy_mcvcnqi2
+1. fqy_rnkm
+1. fqyy_rnkm
+2. ../lab_pliki/ 1
+2. ../lab_pliki/a 0
+2. ../lab_pliki/a/b 0
+2. ../lab_pliki/a/b/d 0
+2. ../lab_pliki/a/b/d/e 0
+2. ../lab_pliki/a/c 0
+2. ../lab_pliki/a/c/f 0
+2. ../lab_pliki/a/c/f/h 0
+2. ../lab_pliki/folder 1
+2. ../lab_pliki/katalog2 0
+3. \home\karol\Documents\SO2_lab\lab_pliki\katalog2\Nowszy_plik_w_katalog2.txt
+3. \home\karol\Documents\SO2_lab\lab_pliki\katalog2\nowy_plik_w_katalog2.txt
+3. \home\karol\Documents\SO2_lab\lab_pliki\nowy_plik123
+3. \home\karol\Documents\SO2_lab\lab_pliki\nowy_plik.txt

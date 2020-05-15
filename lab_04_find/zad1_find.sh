@@ -31,4 +31,9 @@ then
         exit 1
 fi
 
-find $1 $2 -maxdepth 3 -and \( \( -name "*.png" -size -200c -exec rm {} +  -printf '1 ' \) , \( -type d -and \( -perm -400 -or ! -perm -001 \) -printf '2 ' -print \) , \( -type l -exec test ! -f {} \; -printf '3 ' -print \) , \( -type f -printf '4 ' -print -printf '%i %s %t\n' \) \)
+find $1 $2 -maxdepth 3 -and \( \
+ \( -name "*.png" -size -200c -exec rm {} +  -printf '1 ' \) ,\
+ \( -type d -and \( -perm -400 -or ! -perm -001 \) -printf '2 ' -print \) ,\
+ \( -type l -exec test ! -f {} \; -printf '3 ' -print \) ,\
+ \( -type f -printf '4 ' -print -printf '%i %s %t\n' \) \
+ \)

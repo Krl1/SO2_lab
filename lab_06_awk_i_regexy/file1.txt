@@ -1,0 +1,26 @@
+
+Beth 4.00 0
+
+nowe zycie 10-02-2020 stare zycie 09-02-2020 trwajace od 03-06-2010 // jeszcze jakis komentarz
+
+jakies dane 5 6.00 30
+tekst przed komentarzem //tekst po komentarzu 
+dzien 30-04-2020 zakupy udane //i cyk komentarz
+#include <stdio.h>
+#include <stdio.h>
+#include    <sabc.h>    
+#include <bledne.h"
+#include "blende2.h>
+dzien // 18-06-2019 i co teraz 30-04-2020 psikus 30-04-2020
+
+psikus /a/to psikus// nowy psikus
+
+#include "a.cpp"
+tekst przed komentarzem //tekst po // komentarzu 
+
+
+
+
+04-05-2020 04-06-2021 //dsadasd 07-08-1996
+sdafd //
+

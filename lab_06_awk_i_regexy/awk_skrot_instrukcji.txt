@@ -1,0 +1,196 @@
+awk 'tekst programu' nazwa pliku do przetworzenia
+awk 'tekst programu' < nazwa pliku do przetworzenia
+komenda | awk 'tekst programu'
+
+awk 'program $ czesc 1'$zmiennabashowa'program $ czesc 2'
+
+RS = "\n"
+FS = " "
+print "jakis" "tam" "tekst"  -> jakistamtekst
+print "jakis", "tam", "tekst"  -> jakis tam tekst (jeśli OFS = " ")
+
+ORS = "\n"
+OFS = " "
+
+NR - liczba przetworzonych do tej pory rekordów
+NF - liczba przetworzonych pól w rekordzie
+RT - wartość separatora (np. "\n") aktualnego rekordu
+
+$0 			// wartosc (tekst) calego aktualnego REKORDU
+$1 			// wartosc pierwszego pola aktualnego rekordu
+$2 			// wartosc drugiego pola
+zmienna=5
+zmienna     // 5
+$zmienna 	// wartosc PIĄTEGO pola
+$NF 		// wartosc ostatniego pola
+$(NF-1) 	// wartosc przedostatniego pola
+
+$0 = "nowy tekst"
+$1 = zmienna
+$2 = $3
+
+FIELDWIDTHS = "12 10 6" //dlugosci kolejnych pol w rekordzie
+FPAT = wyrażenie regularne opisujące pole
+
+----------------------------------------------------------
+
+wzorzec { akcja } -> gdy wzorzec się zgadza wykonywana jest akcja
+wzorzec 	->  gdy wzorzec sie zgadza, wykonywany jest domyślny { print }, czyli { print $0 }
+{ akcja }	->  dla każdej lini wykonuje się akcję
+
+Wzorce specjalne BEGIN oraz END (można użyć kilku)
+BEGIN - wykonuje akcję przed przetworzeniem rekordów
+END - wykonuje akcję po przetworzeniu wszystkich rekordów
+
+Przykład: 
+( NF > 3 || NR % 2 == 0 ) && var == 4 \
+{ print "Hello "; print "world!" }
+
+
+Tablice (jak słowniki w Python):
+
+tablica[ "tekst" ] = jakas wartosc;
+tablica[ zmienna ] = jakas wartosc;
+tablica[ 10 ] = jakas wartosc;
+
+if ( klucz in tablica )
+	print tablica[ klucz ];
+
+for ( klucz in tablica )
+	print tablica[ klucz ];
+
+Funckje:
+
+domyślny argument - $0
+-length($1) (length(ma) zwróci 2)
+-index($3) zwróci 3 (dla 'Ala ma kota' index(ma) zwróci 2)
+-split(separator)
+-substring - tworzy podłańcuch (czymkolwiek to jest?)
+-tolower(Ala) = ala
+-toupper(Ala) - ALA
+
+----------------------------------------------------------------------------
+
+Wyrażenia regularne (regexy)
+
+-----------------------
+1. Wstęp
+
+a (wynik: a)
+abc (sklejone ANDem,wynik: abc)
+a|b (sklejone ORem, wynik: a, b)
+ab|cde (wynik: ab, cde)
+a(b|c)de (wynik: abde, acde)
+znaki specjalne \| \. \* \\ \/ ->(nie zawsze), \( \), \:, \[, \]
+tabulator \t
+koniec wiersza \n 
+. -> dowolny znak (wyjatkiem moze byc znak nowej linii)
+[abc] = a|b|c = [aaaabbbbcc] (wynik: a,b,c)
+[.*()] = \.|\*|\(|\) (wynik: ., *, (, ))
+\[|\] = [[\]] (wynik: [, ]) 
+[^abc] (wynik: dowolny znak oprócz a, b lub c)
+[a^bc] = [\^abc] (wynik: a, ^, b, c)
+[a-zA-Z0-9_]
+[a b] (wynik: a, spacja:' ', b)
+
+Możliwy problem z [a-z] jako [a-ząćęłńóśźż] gdy chcemy j. polski, jeżeli [a-z] da nam zły wynik, np dużą literę, to nalezy przed wywołaniem awka ustawić odpowiednią zmieną bashową: LC_LANG=c
+
+[a-zA-Z0-9] = [[:lower:][:upper:][:digit:]]
+[a-z[:digit:] !] (wynik: jeden znak, który jest małą literą, cyfrą, spacją lub wykrzyknikiem)
+
+-----------------------
+2. Określenie krotności
+
+? -> 0 lub 1
+a?		#znak 'a' lub bez znaku
+abc?	#ciag ab lub abc
+a(bc)?	#znak 'a' lub ciag 'abc'
+
++ -> 1 lub więcej
+a+						#ciag zlozony z samych 'a'
+(0|1|2|3|4|5|6|7|8|9)+	#ciag cyfr
+[0-9]+					#ciag cyfr
+[0-9][0-9]+				#ciag co najmniej dwoch cyfr
+([0-9][0-9])+			#ciag z parzysta liczby cyfr
+
+* -> 0 lub więcej
+.*		#dowolną liczbę (także zero) dowolnych znaków -> zbyt liberalne
+
+wyrażenia przedziałowe (jeżeli nie ma ich domyślnie, to do wywołania awka dodać --re-interval lub --posix)
+a{n}	# n-elementowy ciag znakow
+a{n,m}	# od n- do m- elelemtowy ciag znakow
+a{n,}	# co najmniej n-elementowy ciag znakow
+brak a{,n} !
+
+-----------------------
+3. Regexy a awk
+
+Określenie RS
+gdy tekst: przykładowy##tekst#z#hashami####jako###separatory
+RS="#+"
+
+~ -> znak dopasowania (!~ -> brak dopasowania)
+/regex/ { print $0 } = $0 ∼ /regex/ { print $0 }
+$3 ∼ /regex/ # "przeszukanie" pola 3
+var ∼ /regex/ # "przeszukanie" zmiennej
+
+/a/ { print $0 } (wydrukuje rekordy składające się z samego a oraz takie, w których GDZIEKOLWIEK w przeszukiwanym tekście znajduje się podciąg pasujący do wzorca)
+
+^ -> dopasuje się do początku przeszukiwanego tekstu
+$ -> dopasuje się do końca przeszukiwanego tekstu
+/^a$/ { print $0 } (znajdzie rekordy skladające się z samego a)
+/^$/  -> pusty rekord
+
+BEGIN { var="regex" }
+$0 ∼ var { print $0 }  (/var/ { print $0 } -> wyszuka po prostu tekstu var)
+
+/./ { print $0 } 	-> dowolny znak
+/\./ { print $0 }	-> rekord składający się z kropki '.'
+
+BEGIN { var="\." }
+$0 ∼ var { print $0 } -> kod przestanie działać ponieważ \. to zwykła kropka
+
+BEGIN { var=''\\.'' }
+$0 ∼ var { print $0 } -> rekord składający się z kropki '.'
+
+dosłowny backslash: /\\/ lub "\\\\"
+
+-----------------------
+4. Funkcje match oraz sub
+
+match -> szuka dopasowania (podobnie jak ~), gdy nie znajdzie to zwraca 0, gdy znajdzie to zwraca indeks w poszukiwanym łańcuchu, w którym zaczyna się dopasowany tekst (indeksowanie zaczyna się od 1)
+RSTART -> opisuje gdzie w łancuchu nastąpiło dopasowanie
+RLENGTH -> opisuje długość odpasowania
+
+przykład: 
+$0 = jakis tekst b2001
+match( $0 , /(a|b)([0-9]+)/ , tab )
+-tab[0] = "b2001"
+-tab[1] = "b" 		#pierwsza grupa
+-tab[2] = "2001"	#druga grupa
+Dodatkowo, dla każdej grupy ustawione zostaną dodatkowe 2 elementy tablicy,
+które przechowują odpowiednik zmiennych RSTART i RLENGTH dla tej właśnie
+grupy.
+
+sub -> podmiana tekstu, zamienia pierwsze wystąpienie, zwraca liczbe dokonancyh podmian (0 lub 1)
+sub( /c+/ , "d" , $1 ) (ccc tekst -> d tekst)
+
+sub( /[0-9]+/ , "&.00" , $1 ) (2 tekst -> 2.00 tekst)
+
+gdy chcemy znak &, to należy poprzedzić go dwoma \\ (bo cudzysłów), ale może nie działać, a może działać (trzeba kombinować z --posix)
+
+substr - wycięcie tekstu
+
+gsub( /[0-9]+/ , "&.00" , $1 ) - zmienia wszystkie dopasowania, a nie tylko pierwsze
+
+gensub (działa tylko w gawk, ale możliwe, że moje awk to gawk), (nie działa po podaniu opcjii --traditional lub --posix)
+nie modyfikuje wskazanego tekstu, a zwraca jego modyfikację
+
+tekst = gensub( ... , ... , ... , tekst )
+3 argument:
+- "g" lub "G" - działa podobnie jak gsub
+- cyfra np. 3 - zamieni wskazane wystąpienie, np trzecie 
+\0 = &
+\1 do \9 to zwraca wzorzec z danej grupy
+gensub( /([0-9]+),([0-9]+) PLN/ , "\\1 zl i \\2 gr" , "g" , $0 )
+zamieni "2,56 PLN" na "2 zl i 56 gr"
