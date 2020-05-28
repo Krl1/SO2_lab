@@ -1,0 +1,24 @@
+-exec 0
+.ukryty 0
+.ukryty_w_folder 0
+Nowszy_plik_w_katalog2.txt 0
+P1.txt 0
+P2.txt 0
+P4.py 0
+Q1.py 0
+dow 50
+dow_plik 50
+dow_twa 0
+dowiazanie 0
+dowiazanie_2 50
+doww_plik 4
+nowy_plik.txt 0
+nowy_plik123 0
+nowy_plik_w_katalog2.txt 0
+obraz.jpg 0
+plik 0
+plik 0
+plik.txt 0
+plik2 0
+tresc_lab_08 (copy).txt 11
+tresc_lab_08.txt 1
